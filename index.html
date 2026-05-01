@@ -88,6 +88,62 @@
       white-space: nowrap;
     }
 
+    /* ── Canvas toolbar (floating, centred over canvas) ─── */
+    #canvas-toolbar {
+      position: absolute;
+      top: 16px;
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 25;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 12px;
+      background: #161b22;
+      border: 1px solid #30363d;
+      border-radius: 10px;
+      box-shadow: 0 4px 16px rgba(0,0,0,0.5);
+      pointer-events: auto;
+      white-space: nowrap;
+    }
+
+    /* ── Merge hint banner (below main toolbar) ─── */
+    #merge-hint {
+      display: none;
+      justify-content: center;
+      align-items: center;
+      gap: 6px;
+      padding: 5px 12px;
+      background: rgba(31, 111, 235, 0.10);
+      border-bottom: 1px solid rgba(31, 111, 235, 0.30);
+      font-size: 12px;
+      color: #79c0ff;
+      white-space: nowrap;
+      flex-shrink: 0;
+    }
+    #merge-hint.visible { display: flex; }
+    #merge-hint .merge-hint-link {
+      background: none;
+      border: none;
+      padding: 0;
+      font-size: 12px;
+      color: #58a6ff;
+      cursor: pointer;
+      text-decoration: underline;
+    }
+    #merge-hint .merge-hint-link:hover { color: #79c0ff; }
+    #merge-hint .merge-hint-close {
+      background: none;
+      border: none;
+      padding: 0 0 0 4px;
+      font-size: 13px;
+      color: #79c0ff;
+      cursor: pointer;
+      opacity: 0.6;
+      line-height: 1;
+    }
+    #merge-hint .merge-hint-close:hover { opacity: 1; }
+
     .btn {
       display: inline-flex;
       align-items: center;
@@ -497,6 +553,54 @@
       color: #58a6ff;
     }
     .btn-toggle.active:hover { background: #264f7d; }
+
+    /* ── Toolbar toggle switches ─────────────────────────── */
+    .toggle-switch {
+      display: flex;
+      align-items: center;
+      gap: 7px;
+      cursor: pointer;
+      user-select: none;
+      font-size: 0.8rem;
+      color: #cdd9e5;
+      white-space: nowrap;
+    }
+    .toggle-switch input[type="checkbox"] {
+      position: absolute;
+      opacity: 0;
+      width: 0;
+      height: 0;
+    }
+    .toggle-track {
+      position: relative;
+      width: 36px;
+      height: 20px;
+      background: #444c56;
+      border-radius: 10px;
+      border: 1px solid #30363d;
+      transition: background 0.2s, border-color 0.2s;
+      flex-shrink: 0;
+    }
+    .toggle-switch input:checked ~ .toggle-track {
+      background: #1f4d7a;
+      border-color: #58a6ff;
+    }
+    .toggle-thumb {
+      position: absolute;
+      top: 2px;
+      left: 2px;
+      width: 14px;
+      height: 14px;
+      background: #8b949e;
+      border-radius: 50%;
+      transition: left 0.2s, background 0.2s;
+    }
+    .toggle-switch input:checked ~ .toggle-track .toggle-thumb {
+      left: 18px;
+      background: #58a6ff;
+    }
+    .toggle-label { line-height: 1; }
+
     #canvas-wrap.merge-mode { cursor: crosshair; }
     #canvas-wrap.hovering   { cursor: pointer; }
     #canvas-wrap.panning    { cursor: grabbing; }
@@ -561,8 +665,9 @@
     /* ── Merge properties panel ─────────────────────────────────── */
     #merge-props-panel {
       position: absolute;
-      top: 12px;
-      right: 14px;
+      top: 70px;
+      left: 50%;
+      transform: translateX(-50%);
       display: none;
       z-index: 10;
       background: #161b22;
@@ -669,6 +774,804 @@
       background: #0d1117;
       cursor: pointer;
     }
+
+    /* ── Onboarding / getting-started callout ───────────────────── */
+    #onboarding-callout {
+      position: absolute;
+      top: 72px;
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 30;
+      background: #161b22;
+      border: 1px solid #1f6feb;
+      border-radius: 10px;
+      padding: 14px 16px;
+      width: max-content;
+      max-width: min(400px, calc(100% - 32px));
+      box-shadow: 0 0 0 3px rgba(31,111,235,0.12), 0 8px 24px rgba(0,0,0,0.6);
+      pointer-events: auto;
+      transition: opacity 0.2s ease;
+    }
+    #onboarding-callout.hidden {
+      opacity: 0;
+      pointer-events: none;
+    }
+    .onboarding-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      margin-bottom: 10px;
+    }
+    .onboarding-title {
+      font-size: 13px;
+      font-weight: 700;
+      color: #e6edf3;
+    }
+    #onboarding-close {
+      background: none;
+      border: none;
+      color: #8b949e;
+      cursor: pointer;
+      font-size: 14px;
+      line-height: 1;
+      padding: 2px 4px;
+      border-radius: 4px;
+      flex-shrink: 0;
+    }
+    #onboarding-close:hover { color: #e6edf3; background: #30363d; }
+    .onboarding-steps {
+      margin: 0;
+      padding-left: 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      list-style: decimal;
+    }
+    .onboarding-steps li {
+      font-size: 12px;
+      color: #c9d1d9;
+      line-height: 1.5;
+    }
+    .onboarding-steps li strong { color: #58a6ff; }
+    .onboarding-tip {
+      margin-top: 10px;
+      padding-top: 10px;
+      border-top: 1px solid #21262d;
+      font-size: 11px;
+      color: #8b949e;
+    }
+
+    /* ── Light colour scheme ──────────────────────────────────────────── */
+    body[data-color-scheme="light"] {
+      background: #faf8f2;
+      color: #1c1917;
+    }
+
+    body[data-color-scheme="light"] #alpha-banner {
+      background: #fef3c7;
+      border-bottom-color: #d97706;
+      color: #92400e;
+    }
+    body[data-color-scheme="light"] #alpha-banner a { color: #92400e; }
+    body[data-color-scheme="light"] #alpha-banner a:hover { color: #1c1917; }
+    body[data-color-scheme="light"] #alpha-banner-close { color: #92400e; }
+
+    body[data-color-scheme="light"] #toolbar {
+      background: #ffffff;
+      border-bottom-color: #d4cfc5;
+    }
+    body[data-color-scheme="light"] #toolbar h1 { color: #1c1917; }
+
+    body[data-color-scheme="light"] #canvas-toolbar {
+      background: #ffffff;
+      border-color: #d4cfc5;
+      box-shadow: 0 4px 16px rgba(0,0,0,0.08);
+    }
+
+    body[data-color-scheme="light"] #merge-hint {
+      background: rgba(30, 64, 175, 0.06);
+      border-bottom-color: rgba(30, 64, 175, 0.2);
+      color: #1e40af;
+    }
+    body[data-color-scheme="light"] #merge-hint .merge-hint-link { color: #1e40af; }
+    body[data-color-scheme="light"] #merge-hint .merge-hint-link:hover { color: #1c1917; }
+    body[data-color-scheme="light"] #merge-hint .merge-hint-close { color: #1e40af; }
+
+    body[data-color-scheme="light"] .btn-primary {
+      background: #1d4ed8;
+      border-color: #2563eb;
+    }
+    body[data-color-scheme="light"] .btn-primary:not(:disabled):hover { background: #2563eb; }
+
+    body[data-color-scheme="light"] .btn-secondary {
+      background: #f3f0ea;
+      border-color: #d4cfc5;
+      color: #44403c;
+    }
+    body[data-color-scheme="light"] .btn-secondary:not(:disabled):hover { background: #e8e3db; }
+
+    body[data-color-scheme="light"] .btn-danger {
+      background: #fee2e2;
+      border-color: #fca5a5;
+      color: #991b1b;
+    }
+    body[data-color-scheme="light"] .btn-danger:not(:disabled):hover { background: #fecaca; }
+
+    body[data-color-scheme="light"] .btn-toggle.active {
+      background: #dbeafe;
+      border-color: #2563eb;
+      color: #1e40af;
+    }
+    body[data-color-scheme="light"] .btn-toggle.active:hover { background: #bfdbfe; }
+
+    body[data-color-scheme="light"] .toggle-switch { color: #44403c; }
+    body[data-color-scheme="light"] .toggle-track {
+      background: #d4cfc5;
+      border-color: #b8b2a7;
+    }
+    body[data-color-scheme="light"] .toggle-switch input:checked ~ .toggle-track {
+      background: #bfdbfe;
+      border-color: #2563eb;
+    }
+    body[data-color-scheme="light"] .toggle-thumb { background: #78716c; }
+    body[data-color-scheme="light"] .toggle-switch input:checked ~ .toggle-track .toggle-thumb {
+      background: #1e40af;
+    }
+
+    body[data-color-scheme="light"] #sidebar {
+      background: #f8f5ef;
+      border-right-color: #d4cfc5;
+    }
+    body[data-color-scheme="light"] #sidebar-header { color: #78716c; }
+    body[data-color-scheme="light"] .branch-item:hover { background: #ede8de; }
+    body[data-color-scheme="light"] .branch-item.active { background: #e8e3db; }
+    body[data-color-scheme="light"] .branch-name { color: #1c1917; }
+    body[data-color-scheme="light"] .branch-rename-btn { color: #78716c; }
+    body[data-color-scheme="light"] .branch-rename-btn:hover { color: #1c1917; background: #e8e3db; }
+    body[data-color-scheme="light"] .branch-name-input {
+      color: #1c1917;
+      background: #faf8f2;
+      border-color: #2563eb;
+    }
+    body[data-color-scheme="light"] .branch-name-input.invalid { border-color: #dc2626; }
+    body[data-color-scheme="light"] .commit-item { color: #78716c; }
+    body[data-color-scheme="light"] .commit-item:hover { background: #ede8de; color: #44403c; }
+    body[data-color-scheme="light"] .commit-item.active { background: #e8e3db; color: #1c1917; }
+
+    body[data-color-scheme="light"] #hint { color: #c8c0b0; }
+    body[data-color-scheme="light"] #privacy-link { color: #c8c0b0; }
+    body[data-color-scheme="light"] #privacy-link:hover { color: #78716c; }
+
+    body[data-color-scheme="light"] #sel-rect {
+      border-color: rgba(30, 64, 175, 0.85);
+      background: rgba(30, 64, 175, 0.07);
+    }
+
+    body[data-color-scheme="light"] #guide-panel {
+      background: #f8f5ef;
+      border-left-color: #d4cfc5;
+      box-shadow: -4px 0 24px rgba(0,0,0,.1);
+    }
+    body[data-color-scheme="light"] #guide-panel-header { border-bottom-color: #d4cfc5; }
+    body[data-color-scheme="light"] #guide-panel-header h2 { color: #1c1917; }
+    body[data-color-scheme="light"] #guide-panel-close { color: #78716c; }
+    body[data-color-scheme="light"] #guide-panel-close:hover { color: #1c1917; background: #e8e3db; }
+    body[data-color-scheme="light"] #guide-panel-body::-webkit-scrollbar-thumb { background: #c8c0b0; }
+    body[data-color-scheme="light"] .guide-section-title { color: #78716c; border-bottom-color: #e8e3db; }
+    body[data-color-scheme="light"] .guide-icon { color: #2563eb; }
+    body[data-color-scheme="light"] .guide-item-text { color: #44403c; }
+    body[data-color-scheme="light"] .guide-item-text strong { color: #1c1917; }
+    body[data-color-scheme="light"] .guide-kbd {
+      background: #f3f0ea;
+      border-color: #d4cfc5;
+      color: #44403c;
+    }
+    body[data-color-scheme="light"] #btn-help {
+      background: #f3f0ea;
+      border-color: #d4cfc5;
+      color: #44403c;
+    }
+    body[data-color-scheme="light"] #btn-help:hover,
+    body[data-color-scheme="light"] #btn-help.active { background: #e8e3db; color: #1c1917; }
+
+    body[data-color-scheme="light"] #modal-bg { background: rgba(0,0,0,.3); }
+    body[data-color-scheme="light"] #modal {
+      background: #ffffff;
+      border-color: #d4cfc5;
+      box-shadow: 0 16px 48px rgba(0,0,0,.15);
+    }
+    body[data-color-scheme="light"] #modal h3 { color: #1c1917; }
+    body[data-color-scheme="light"] #modal-input {
+      background: #faf8f2;
+      border-color: #d4cfc5;
+      color: #1c1917;
+    }
+    body[data-color-scheme="light"] #modal-input:focus { border-color: #2563eb; }
+    body[data-color-scheme="light"] #modal-fork-info {
+      background: #faf8f2;
+      border-color: #d4cfc5;
+      color: #78716c;
+    }
+    body[data-color-scheme="light"] #modal-fork-info .fork-branch { color: #1c1917; }
+    body[data-color-scheme="light"] #modal-fork-info .fork-commit { color: #1e40af; }
+    body[data-color-scheme="light"] #modal-position label { color: #44403c; }
+
+    body[data-color-scheme="light"] #merge-props-panel {
+      background: #ffffff;
+      border-color: #d4cfc5;
+      box-shadow: 0 4px 16px rgba(0,0,0,.1);
+    }
+    body[data-color-scheme="light"] .merge-props-title { color: #78716c; }
+    body[data-color-scheme="light"] .merge-props-row > label { color: #78716c; }
+    body[data-color-scheme="light"] #merge-label-input {
+      background: #faf8f2;
+      border-color: #d4cfc5;
+      color: #1c1917;
+    }
+    body[data-color-scheme="light"] #merge-label-input:focus { border-color: #2563eb; }
+    body[data-color-scheme="light"] .merge-style-btn {
+      background: #f3f0ea;
+      border-color: #d4cfc5;
+      color: #78716c;
+    }
+    body[data-color-scheme="light"] .merge-style-btn:hover { background: #e8e3db; color: #44403c; }
+    body[data-color-scheme="light"] .merge-style-btn.active {
+      background: #dbeafe;
+      border-color: #2563eb;
+      color: #1e40af;
+    }
+
+    body[data-color-scheme="light"] #color-picker-popover {
+      background: #ffffff;
+      border-color: #d4cfc5;
+      box-shadow: 0 8px 24px rgba(0,0,0,.15);
+    }
+    body[data-color-scheme="light"] .cp-swatch-btn:hover,
+    body[data-color-scheme="light"] .cp-swatch-btn.selected { border-color: #1c1917; }
+    body[data-color-scheme="light"] .cp-custom label { color: #78716c; }
+    body[data-color-scheme="light"] #cp-custom-input { border-color: #d4cfc5; background: #faf8f2; }
+
+    body[data-color-scheme="light"] #onboarding-callout {
+      background: #ffffff;
+      border-color: #2563eb;
+      box-shadow: 0 0 0 3px rgba(37,99,235,0.1), 0 8px 24px rgba(0,0,0,.12);
+    }
+    body[data-color-scheme="light"] .onboarding-title { color: #1c1917; }
+    body[data-color-scheme="light"] #onboarding-close { color: #78716c; }
+    body[data-color-scheme="light"] #onboarding-close:hover { color: #1c1917; background: #e8e3db; }
+    body[data-color-scheme="light"] .onboarding-steps li { color: #44403c; }
+    body[data-color-scheme="light"] .onboarding-steps li strong { color: #1e40af; }
+    body[data-color-scheme="light"] .onboarding-tip { border-top-color: #e8e3db; color: #78716c; }
+
+    body[data-color-scheme="light"] #tag-editor-input {
+      background: #fefce8;
+      color: #92400e;
+      border-color: #d97706;
+    }
+    body[data-color-scheme="light"] #tag-editor-input::placeholder { color: #d4c89a; }
+    body[data-color-scheme="light"] #tag-edit-icon {
+      background: rgba(248,245,239,0.9);
+      color: #78716c;
+      border-color: #d4cfc5;
+    }
+    body[data-color-scheme="light"] #tag-edit-icon:hover { color: #d97706; border-color: #d97706; }
+
+    body[data-color-scheme="light"] .branch-item.drag-over {
+      border-top-color: #2563eb;
+      background: #e8e3db;
+    }
+
+    /* ── Demo tutorial callout (bottom-right) ─────────────────── */
+    #demo-tutorial {
+      position: absolute;
+      bottom: 20px;
+      right: 20px;
+      z-index: 30;
+      background: #161b22;
+      border: 1px solid #1f6feb;
+      border-radius: 10px;
+      padding: 14px 16px;
+      width: 260px;
+      box-shadow: 0 0 0 3px rgba(31,111,235,0.12), 0 8px 24px rgba(0,0,0,0.6);
+      pointer-events: auto;
+      transition: opacity 0.2s ease;
+    }
+    #demo-tutorial.hidden {
+      opacity: 0;
+      pointer-events: none;
+    }
+    .demo-tutorial-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      margin-bottom: 10px;
+    }
+    .demo-tutorial-title {
+      font-size: 13px;
+      font-weight: 700;
+      color: #e6edf3;
+    }
+    #demo-tutorial-close {
+      background: none;
+      border: none;
+      color: #8b949e;
+      cursor: pointer;
+      font-size: 14px;
+      line-height: 1;
+      padding: 2px 4px;
+      border-radius: 4px;
+      flex-shrink: 0;
+    }
+    #demo-tutorial-close:hover { color: #e6edf3; background: #30363d; }
+    /* SVG animation stage */
+    #demo-tutorial-svg {
+      display: block;
+      width: 100%;
+      height: 145px;
+      overflow: visible;
+    }
+    /* Caption that changes per phase */
+    .demo-tutorial-caption {
+      font-size: 11px;
+      color: #8b949e;
+      text-align: center;
+      margin-top: 8px;
+      height: 40px;
+      overflow: hidden;
+      line-height: 20px;
+    }
+    /* ── Animated nodes / lines inside the SVG ── */
+    /* Main branch line (always visible) */
+    .dt-main-line {
+      stroke: #3fb950;
+      stroke-width: 2.5;
+      fill: none;
+      stroke-linecap: round;
+    }
+    /* Feature branch line — grows in during phase 2 */
+    .dt-feature-line {
+      stroke: #58a6ff;
+      stroke-width: 2.5;
+      fill: none;
+      stroke-linecap: round;
+      stroke-dasharray: 170;
+      stroke-dashoffset: 170;
+      animation: dt-draw-feature 18s ease infinite;
+    }
+    /* Merge arrow line — appears in phase 3 */
+    .dt-merge-line {
+      stroke: #a371f7;
+      stroke-width: 2;
+      fill: none;
+      stroke-linecap: round;
+      stroke-dasharray: 60;
+      stroke-dashoffset: 60;
+      animation: dt-draw-merge 18s ease infinite;
+    }
+    /* Commit circles on main */
+    .dt-commit-main {
+      fill: #3fb950;
+      stroke: #161b22;
+      stroke-width: 2;
+      r: 6;
+    }
+    /* Feature commit (initial, default — appears when branch is created, phase 2) */
+    .dt-commit-feature-initial {
+      fill: #58a6ff;
+      stroke: #161b22;
+      stroke-width: 2;
+      r: 6;
+      opacity: 0;
+      animation: dt-show-feature-initial 18s ease infinite;
+    }
+    /* Feature commit (added by user — appears in phase 3 via + Add Commit) */
+    .dt-commit-feature {
+      fill: #58a6ff;
+      stroke: #161b22;
+      stroke-width: 2;
+      r: 6;
+      opacity: 0;
+      animation: dt-show-feature-commit 18s ease infinite;
+    }
+    /* Merge commit on main — appears in phase 3 */
+    .dt-commit-merge {
+      fill: #a371f7;
+      stroke: #161b22;
+      stroke-width: 2;
+      r: 6;
+      opacity: 0;
+      animation: dt-show-merge-commit 18s ease infinite;
+    }
+    /* Branch fork dot (highlight when branching) */
+    .dt-fork-pulse {
+      fill: none;
+      stroke: #58a6ff;
+      stroke-width: 1.5;
+      r: 9;
+      opacity: 0;
+      animation: dt-fork-pulse 18s ease infinite;
+    }
+    /* Branch label */
+    .dt-label {
+      font-family: 'Segoe UI', system-ui, sans-serif;
+      font-size: 9px;
+      fill: #58a6ff;
+      opacity: 0;
+      animation: dt-show-label 18s ease infinite;
+    }
+    /* Caption text phases */
+    .demo-tutorial-caption .cap-phase {
+      display: none;
+    }
+    .demo-tutorial-caption .cap-phase.active {
+      display: block;
+    }
+    /* Inline button badge — mirrors the look of the real toolbar buttons */
+    .demo-btn {
+      display: inline-block;
+      background: #21262d;
+      border: 1px solid #444c56;
+      border-radius: 4px;
+      padding: 1px 5px;
+      font-size: 10px;
+      color: #e6edf3;
+      white-space: nowrap;
+      vertical-align: middle;
+      line-height: 14px;
+      font-family: inherit;
+    }
+    /* ── Keyframes ── */
+    /* Phase timing (18 s loop) — keyframe % scaled so absolute second timing is unchanged.
+       Scale factor 18/26 ≈ 0.692 applied to all original stops.
+         0–2 s   (0–7.7%)  : cursor dwells at fork commit; click fires at 1.5 s (≈6%)
+         2–4 s   (7.7–15%) : cursor glides to ⑂ Add Branch button
+         4–4.5 s (15–17%)  : cursor dwells at button; click fires at 4.5 s (≈17%)
+         5–7 s   (19–27%)  : branch line draws in WITH initial commit
+         7–10 s  (27–38%)  : cursor glides to initial feature commit
+         10 s    (38–39%)  : cursor dwells; click fires
+         10.8–12 s(42–46%) : cursor glides to + Add Commit button
+         12–12.5 s(46–48%) : cursor dwells; click fires
+         12.5–14 s(48–54%) : 2nd commit appears; cursor moves to it
+         14–14.3 s(54–55%) : cursor dwells; click fires
+         14.5–15 s(56–57%) : cursor moves to main branch line
+         15–15.3 s(57–59%) : cursor dwells; merge click fires at ≈59%
+         15.3–16 s(59–62%) : merge arrow draws, merge commit appears
+         ── NEW PHASES (18–26 s) ──
+         16–18.7 s(62–72%) : cursor glides to merge arrow midpoint
+         18.7–19 s(72–73%) : cursor dwells; click on merge arrow at 72%
+         19–19.5 s(73–75%) : Merge Properties panel fades in
+         19.5–20.6s(75–79%): cursor moves to Dashed style button
+         20.6–21 s(79–81%) : cursor dwells; Dashed click fires at 81%
+         21–22.9 s(81–88%) : dashed line shows, result held
+         22.9–24 s(88–92%) : fade / reset
+         24–26 s  (92–100%): clean reset                                         */
+    @keyframes dt-draw-feature {
+      0%   { stroke-dashoffset: 170; }
+      17%  { stroke-dashoffset: 170; }   /* 4.5 s — branch starts AFTER button click */
+      27%  { stroke-dashoffset: 0;   }   /* 7 s — branch fully drawn */
+      88%  { stroke-dashoffset: 0;   }
+      92%  { stroke-dashoffset: 170; }
+      100% { stroke-dashoffset: 170; }
+    }
+    /* Initial commit — appears when branch is fully drawn */
+    @keyframes dt-show-feature-initial {
+      0%   { opacity: 0; }
+      26%  { opacity: 0; }
+      27%  { opacity: 1; }
+      88%  { opacity: 1; }
+      92%  { opacity: 0; }
+      100% { opacity: 0; }
+    }
+    /* 2nd commit — appears only after commit button click at ≈47% */
+    @keyframes dt-show-feature-commit {
+      0%   { opacity: 0; }
+      48%  { opacity: 0; }
+      49%  { opacity: 1; }
+      88%  { opacity: 1; }
+      92%  { opacity: 0; }
+      100% { opacity: 0; }
+    }
+    /* Solid merge arrow — draws in at ≈59%, fades to dashed at 83% */
+    @keyframes dt-draw-merge {
+      0%   { stroke-dashoffset: 60; opacity: 1; }
+      59%  { stroke-dashoffset: 60; opacity: 1; }
+      62%  { stroke-dashoffset: 0;  opacity: 1; }
+      81%  { stroke-dashoffset: 0;  opacity: 1; }
+      83%  { stroke-dashoffset: 0;  opacity: 0; }
+      88%  { stroke-dashoffset: 0;  opacity: 0; }
+      92%  { stroke-dashoffset: 60; opacity: 1; }
+      100% { stroke-dashoffset: 60; opacity: 1; }
+    }
+    @keyframes dt-show-merge-commit {
+      0%   { opacity: 0; }
+      60%  { opacity: 0; }
+      62%  { opacity: 1; }
+      88%  { opacity: 1; }
+      92%  { opacity: 0; }
+      100% { opacity: 0; }
+    }
+    @keyframes dt-fork-pulse {
+      0%   { opacity: 0; r: 9; }
+      3%   { opacity: 0.6; r: 12; }
+      8%   { opacity: 0; r: 9; }
+      100% { opacity: 0; }
+    }
+    @keyframes dt-show-label {
+      0%   { opacity: 0; }
+      17%  { opacity: 0; }
+      23%  { opacity: 1; }
+      88%  { opacity: 1; }
+      92%  { opacity: 0; }
+      100% { opacity: 0; }
+    }
+    /* ── Mini-toolbar buttons inside SVG ── */
+    .dt-toolbar-sep {
+      stroke: #30363d;
+      stroke-width: 0.5;
+    }
+    /* Branch button brightens when cursor is hovering/clicking */
+    .dt-btn-branch {
+      animation: dt-branch-btn-hover 18s ease infinite;
+    }
+    @keyframes dt-branch-btn-hover {
+      0%, 12%  { opacity: 0.72; }
+      15%      { opacity: 1;    }   /* cursor arriving */
+      27%      { opacity: 1;    }   /* stays bright until cursor leaves */
+      31%      { opacity: 0.72; }
+      100%     { opacity: 0.72; }
+    }
+    /* Commit button brightens when cursor is hovering/clicking */
+    .dt-btn-commit {
+      animation: dt-commit-btn-hover 18s ease infinite;
+    }
+    @keyframes dt-commit-btn-hover {
+      0%, 44%  { opacity: 0.72; }
+      46%      { opacity: 1;    }   /* cursor arriving */
+      50%      { opacity: 1;    }   /* stays bright until cursor leaves */
+      54%      { opacity: 0.72; }
+      100%     { opacity: 0.72; }
+    }
+    /* ── Animated demo cursor ── */
+    .dt-cursor {
+      pointer-events: none;
+      animation: dt-cursor-move 18s ease infinite;
+    }
+    /* 9-stop cursor journey over 18 s:
+       fork commit → branch button → initial commit → commit button →
+       2nd commit → main branch line → merge arrow → Dashed btn → reset  */
+    @keyframes dt-cursor-move {
+      0%,  5.5% { transform: translate(77px, 77px);  }  /* at fork commit          */
+      15%       { transform: translate(159px, 2px);  }  /* at branch button        */
+      27%       { transform: translate(159px, 2px);  }  /* stays during draw       */
+      38.5%     { transform: translate(117px, 37px); }  /* at initial feature commit */
+      39%       { transform: translate(117px, 37px); }  /* dwell + click           */
+      46%       { transform: translate(65px, 2px);   }  /* at commit button        */
+      48%       { transform: translate(65px, 2px);   }  /* dwell + click           */
+      54%       { transform: translate(151px, 37px); }  /* at 2nd feature commit   */
+      55%       { transform: translate(151px, 37px); }  /* dwell + click           */
+      57%       { transform: translate(181px, 77px); }  /* at merge point on main  */
+      59%       { transform: translate(181px, 77px); }  /* dwell; merge click fires */
+      70%       { transform: translate(177px, 59px); }  /* move to merge arrow midpoint */
+      72%       { transform: translate(177px, 59px); }  /* dwell; click on merge arrow */
+      79%       { transform: translate(75px, 127px); }  /* move to Dashed button   */
+      81%       { transform: translate(75px, 127px); }  /* dwell; Dashed click fires */
+      92%       { transform: translate(77px, 77px);  }  /* reset                   */
+      100%      { transform: translate(77px, 77px);  }
+    }
+    /* Click ripple – fork commit (≈6%) */
+    .dt-click-fork {
+      fill: none;
+      stroke: rgba(255,255,255,0.8);
+      stroke-width: 2.5;
+      r: 4;
+      animation: dt-click-fork-anim 18s ease infinite;
+    }
+    @keyframes dt-click-fork-anim {
+      0%   { r: 4;  opacity: 0; }
+      4%   { r: 4;  opacity: 0; }
+      6%   { r: 4;  opacity: 1; }
+      10%  { r: 18; opacity: 0; }
+      100% { opacity: 0; }
+    }
+    /* Click ripple – ⑂ Add Branch button (≈17%) */
+    .dt-click-branch-btn {
+      fill: none;
+      stroke: rgba(255,255,255,0.8);
+      stroke-width: 2.5;
+      r: 4;
+      animation: dt-click-branch-btn-anim 18s ease infinite;
+    }
+    @keyframes dt-click-branch-btn-anim {
+      0%   { r: 4;  opacity: 0; }
+      16%  { r: 4;  opacity: 0; }
+      17%  { r: 4;  opacity: 1; }
+      21%  { r: 18; opacity: 0; }
+      100% { opacity: 0; }
+    }
+    /* Click ripple – initial feature commit (≈39%) */
+    .dt-click-feature {
+      fill: none;
+      stroke: rgba(255,255,255,0.8);
+      stroke-width: 2.5;
+      r: 4;
+      animation: dt-click-feature-anim 18s ease infinite;
+    }
+    @keyframes dt-click-feature-anim {
+      0%   { r: 4;  opacity: 0; }
+      38%  { r: 4;  opacity: 0; }
+      39%  { r: 4;  opacity: 1; }
+      44%  { r: 18; opacity: 0; }
+      100% { opacity: 0; }
+    }
+    /* Click ripple – + Add Commit button (≈47%) */
+    .dt-click-commit-btn {
+      fill: none;
+      stroke: rgba(255,255,255,0.8);
+      stroke-width: 2.5;
+      r: 4;
+      animation: dt-click-commit-btn-anim 18s ease infinite;
+    }
+    @keyframes dt-click-commit-btn-anim {
+      0%   { r: 4;  opacity: 0; }
+      46%  { r: 4;  opacity: 0; }
+      47%  { r: 4;  opacity: 1; }
+      51%  { r: 18; opacity: 0; }
+      100% { opacity: 0; }
+    }
+    /* Click ripple – 2nd feature commit (≈55%) — selects it for merge */
+    .dt-click-commit2 {
+      fill: none;
+      stroke: rgba(255,255,255,0.8);
+      stroke-width: 2.5;
+      r: 4;
+      animation: dt-click-commit2-anim 18s ease infinite;
+    }
+    @keyframes dt-click-commit2-anim {
+      0%   { r: 4;  opacity: 0; }
+      53%  { r: 4;  opacity: 0; }
+      55%  { r: 4;  opacity: 1; }
+      59%  { r: 18; opacity: 0; }
+      100% { opacity: 0; }
+    }
+    /* Click ripple – main branch line (≈59%) — triggers merge */
+    .dt-click-merge {
+      fill: none;
+      stroke: rgba(255,255,255,0.8);
+      stroke-width: 2.5;
+      r: 4;
+      animation: dt-click-merge-anim 18s ease infinite;
+    }
+    @keyframes dt-click-merge-anim {
+      0%   { r: 4;  opacity: 0; }
+      57%  { r: 4;  opacity: 0; }
+      59%  { r: 4;  opacity: 1; }
+      63%  { r: 18; opacity: 0; }
+      100% { opacity: 0; }
+    }
+    /* Click ripple – merge arrow midpoint (≈72%) — opens Merge Properties */
+    .dt-click-merge-line {
+      fill: none;
+      stroke: rgba(255,255,255,0.8);
+      stroke-width: 2.5;
+      r: 4;
+      animation: dt-click-merge-line-anim 18s ease infinite;
+    }
+    @keyframes dt-click-merge-line-anim {
+      0%   { r: 4;  opacity: 0; }
+      70%  { r: 4;  opacity: 0; }
+      72%  { r: 4;  opacity: 1; }
+      76%  { r: 18; opacity: 0; }
+      100% { opacity: 0; }
+    }
+    /* Click ripple – Dashed style button (≈81%) */
+    .dt-click-dashed-btn {
+      fill: none;
+      stroke: rgba(255,255,255,0.8);
+      stroke-width: 2.5;
+      r: 4;
+      animation: dt-click-dashed-btn-anim 18s ease infinite;
+    }
+    @keyframes dt-click-dashed-btn-anim {
+      0%   { r: 4;  opacity: 0; }
+      79%  { r: 4;  opacity: 0; }
+      81%  { r: 4;  opacity: 1; }
+      85%  { r: 18; opacity: 0; }
+      100% { opacity: 0; }
+    }
+    /* Dashed merge arrow overlay — appears after Dashed button click */
+    .dt-merge-dashed {
+      stroke: #a371f7;
+      stroke-width: 2;
+      fill: none;
+      stroke-linecap: round;
+      stroke-dasharray: 5 3;
+      opacity: 0;
+      animation: dt-merge-dashed-show 18s ease infinite;
+    }
+    @keyframes dt-merge-dashed-show {
+      0%   { opacity: 0; }
+      81%  { opacity: 0; }
+      83%  { opacity: 1; }
+      88%  { opacity: 1; }
+      92%  { opacity: 0; }
+      100% { opacity: 0; }
+    }
+    /* Mini Merge Properties panel */
+    .dt-merge-props-panel {
+      opacity: 0;
+      animation: dt-merge-props-panel-anim 18s ease infinite;
+    }
+    @keyframes dt-merge-props-panel-anim {
+      0%   { opacity: 0; }
+      72%  { opacity: 0; }
+      74%  { opacity: 1; }
+      88%  { opacity: 1; }
+      92%  { opacity: 0; }
+      100% { opacity: 0; }
+    }
+    /* Dashed style button highlights when clicked */
+    .dt-dashed-style-btn-rect {
+      animation: dt-dashed-style-btn-anim 18s ease infinite;
+    }
+    @keyframes dt-dashed-style-btn-anim {
+      0%,  79% { fill: #21262d; stroke: #444c56; }
+      81%      { fill: #1f6feb; stroke: #1f6feb; }
+      88%      { fill: #1f6feb; stroke: #1f6feb; }
+      92%      { fill: #21262d; stroke: #444c56; }
+      100%     { fill: #21262d; stroke: #444c56; }
+    }
+    /* Light-mode overrides */
+    body[data-color-scheme="light"] #demo-tutorial {
+      background: #ffffff;
+      border-color: #2563eb;
+      box-shadow: 0 0 0 3px rgba(37,99,235,0.1), 0 8px 24px rgba(0,0,0,.12);
+    }
+    body[data-color-scheme="light"] .demo-tutorial-title { color: #1c1917; }
+    body[data-color-scheme="light"] #demo-tutorial-close { color: #78716c; }
+    body[data-color-scheme="light"] #demo-tutorial-close:hover { color: #1c1917; background: #e8e3db; }
+    body[data-color-scheme="light"] .demo-tutorial-caption { color: #78716c; }
+    body[data-color-scheme="light"] .demo-btn {
+      background: #f6f8fa;
+      border-color: #d0d7de;
+      color: #24292f;
+    }
+    body[data-color-scheme="light"] #demo-tutorial-svg .dt-commit-main,
+    body[data-color-scheme="light"] #demo-tutorial-svg .dt-commit-feature-initial,
+    body[data-color-scheme="light"] #demo-tutorial-svg .dt-commit-feature,
+    body[data-color-scheme="light"] #demo-tutorial-svg .dt-commit-merge {
+      stroke: #ffffff;
+    }
+    body[data-color-scheme="light"] #demo-tutorial-svg .dt-cursor path {
+      fill: #333;
+      stroke: #ffffff;
+    }
+    body[data-color-scheme="light"] #demo-tutorial-svg .dt-click-fork,
+    body[data-color-scheme="light"] #demo-tutorial-svg .dt-click-feature,
+    body[data-color-scheme="light"] #demo-tutorial-svg .dt-click-branch-btn,
+    body[data-color-scheme="light"] #demo-tutorial-svg .dt-click-commit-btn,
+    body[data-color-scheme="light"] #demo-tutorial-svg .dt-click-commit2,
+    body[data-color-scheme="light"] #demo-tutorial-svg .dt-click-merge,
+    body[data-color-scheme="light"] #demo-tutorial-svg .dt-click-merge-line,
+    body[data-color-scheme="light"] #demo-tutorial-svg .dt-click-dashed-btn {
+      stroke: rgba(0,0,0,0.7);
+    }
+    body[data-color-scheme="light"] #demo-tutorial-svg .dt-toolbar-sep { stroke: #d0d7de; }
+    body[data-color-scheme="light"] #demo-tutorial-svg .dt-btn-branch rect { fill: #2563eb; }
+    body[data-color-scheme="light"] #demo-tutorial-svg .dt-btn-commit rect { fill: #f6f8fa; stroke: #d0d7de; }
+    body[data-color-scheme="light"] #demo-tutorial-svg .dt-btn-commit text { fill: #24292f; }
+
+    /* ── Sketch overlay canvas ─────────────────────────────────── */
+    #sketch-overlay {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      display: none;
+    }
   </style>
 </head>
 <body>
@@ -676,20 +1579,28 @@
 <!-- ── Alpha banner ──────────────────────────────────────────── -->
 <div id="alpha-banner">
   <span>⚠️</span>
-  <span><strong>Alpha</strong> — This app is still under development. Found a bug or have feedback? <a href="https://github.com/OWNER/REPO/issues" target="_blank" rel="noopener noreferrer">Raise an issue on GitHub</a>.</span>
+  <span><strong>Alpha</strong> — This app is still under development. Found a bug or have feedback? <a href="https://github.com/JHarvey-dev/SimpleBranchingTool/issues" target="_blank" rel="noopener noreferrer">Raise an issue on GitHub</a>.</span>
   <button id="alpha-banner-close" aria-label="Dismiss banner">✕</button>
 </div>
 
 <!-- ── Toolbar ─────────────────────────────────────────────── -->
 <div id="toolbar">
   <h1>🌿 Git Branching Diagram Maker</h1>
-  <button class="btn btn-secondary" id="btn-commit">+ Add Commit</button>
-  <button class="btn btn-primary"   id="btn-branch">⑂ Add Branch</button>
-  <button class="btn btn-secondary" id="btn-add-tag" style="display:none">🏷 Add Tag</button>
-  <button class="btn btn-danger" id="btn-delete-sel" style="display:none">🗑 Delete Selected</button>
-  <button class="btn btn-secondary" id="btn-export-png">⬇ Export PNG</button>
+  <label class="toggle-switch" title="Toggle sketch mode">
+    <input type="checkbox" id="btn-sketch-toggle" checked aria-label="Sketch mode">
+    <span class="toggle-track"><span class="toggle-thumb"></span></span>
+    <span class="toggle-label">📐 Sketch</span>
+  </label>
+  <label class="toggle-switch" title="Toggle light theme">
+    <input type="checkbox" id="btn-color-toggle" aria-label="Light theme">
+    <span class="toggle-track"><span class="toggle-thumb"></span></span>
+    <span class="toggle-label">☀️ Light</span>
+  </label>
   <button class="btn" id="btn-help" title="User guide">? Help</button>
 </div>
+
+<!-- ── Merge hint (below toolbar, above app) ──────────────── -->
+<div id="merge-hint">💡 Click any branch line on the canvas to merge this commit into it · <button class="merge-hint-link" id="merge-hint-help">Learn more</button><button class="merge-hint-close" id="merge-hint-close" title="Dismiss">✕</button></div>
 
 <!-- ── App ───────────────────────────────────────────────────── -->
 <div id="app">
@@ -699,7 +1610,15 @@
   </div>
 
   <div id="canvas-wrap">
+    <div id="canvas-toolbar">
+      <button class="btn btn-secondary" id="btn-commit">+ Add Commit</button>
+      <button class="btn btn-primary"   id="btn-branch">⑂ Add Branch</button>
+      <button class="btn btn-secondary" id="btn-add-tag" style="display:none">🏷 Add Tag</button>
+      <button class="btn btn-danger" id="btn-delete-sel" style="display:none">🗑 Delete Selected</button>
+      <button class="btn btn-secondary" id="btn-export-png">⬇ Export PNG</button>
+    </div>
     <div id="sel-rect"></div>
+    <canvas id="sketch-overlay" aria-hidden="true"></canvas>
     <div id="tag-editor"><input id="tag-editor-input" type="text" autocomplete="off" spellcheck="false" maxlength="40" placeholder="tag name" /></div>
     <button id="tag-edit-icon" title="Edit tag">✏</button>
 
@@ -720,7 +1639,126 @@
       </div>
     </div>
 
+    <div id="onboarding-callout" role="note" aria-label="Getting started tips">
+      <div class="onboarding-header">
+        <span class="onboarding-title">Getting Started</span>
+        <button id="onboarding-close" aria-label="Dismiss getting started tips">✕</button>
+      </div>
+      <ol class="onboarding-steps">
+        <li><strong>Click a commit</strong> circle on the <em>main</em> branch to select it</li>
+        <li>Click <strong>⑂ Add Branch</strong> in the toolbar to fork a new branch from that commit</li>
+        <li>Click <strong>+ Add Commit</strong> to extend your branch — then repeat to build your diagram</li>
+      </ol>
+      <div class="onboarding-tip">💡 Tip: with a commit selected, click any branch line to draw a merge arrow</div>
+    </div>
     <div id="hint">Scroll to zoom · Middle-drag to pan · Left-drag to select commits/merges · Click a commit to select it, then click a branch to merge · Drag branches within the sidebar to reorder rows · Double-click a branch name to rename it</div>
+
+    <!-- ── Demo tutorial callout ───────────────────────────────── -->
+    <div id="demo-tutorial" role="note" aria-label="Quick-start demo">
+      <div class="demo-tutorial-header">
+        <span class="demo-tutorial-title">✨ Quick Demo</span>
+        <button id="demo-tutorial-close" aria-label="Dismiss demo tutorial">✕</button>
+      </div>
+      <!-- Animated SVG diagram -->
+      <svg id="demo-tutorial-svg" viewBox="0 0 228 145" aria-hidden="true">
+        <!-- Mini toolbar strip with the two action buttons -->
+        <line class="dt-toolbar-sep" x1="0" y1="16" x2="228" y2="16"/>
+        <g class="dt-btn-commit">
+          <rect rx="2" x="28" y="1" width="84" height="14" fill="#21262d" stroke="#444c56" stroke-width="0.5"/>
+          <text font-family="'Segoe UI',system-ui,sans-serif" font-size="7" fill="#c9d1d9" x="70" y="10" text-anchor="middle">+ Add Commit</text>
+        </g>
+        <g class="dt-btn-branch">
+          <rect rx="2" x="120" y="1" width="84" height="14" fill="#1f6feb"/>
+          <text font-family="'Segoe UI',system-ui,sans-serif" font-size="7" fill="white" x="162" y="10" text-anchor="middle">⑂ Add Branch</text>
+        </g>
+        <!-- Main branch line -->
+        <line class="dt-main-line" x1="14" y1="86" x2="214" y2="86" />
+        <!-- Fork branch line from commit at x=80 up to feature row, then right to x=175 -->
+        <path class="dt-feature-line" d="M80,86 C80,86 80,46 100,46 L175,46" />
+        <!-- Merge arrow from second feature commit (x=155) back down to main at x=185 -->
+        <path class="dt-merge-line" d="M155,46 C175,46 185,66 185,86" />
+        <!-- Merge arrowhead -->
+        <polyline class="dt-merge-line" points="178,81 185,86 192,81"
+                  style="animation-delay:0s" />
+        <!-- Fork pulse ring (at the fork commit) -->
+        <circle class="dt-fork-pulse" cx="80" cy="86" />
+        <!-- Main commits -->
+        <circle class="dt-commit-main" cx="40"  cy="86" />
+        <circle class="dt-commit-main" cx="80"  cy="86" />
+        <!-- Initial (default) feature commit — appears when branch is created -->
+        <circle class="dt-commit-feature-initial" cx="120" cy="46" />
+        <!-- Second feature commit — appears when user presses + Add Commit -->
+        <circle class="dt-commit-feature" cx="155" cy="46" />
+        <!-- Merge commit on main -->
+        <circle class="dt-commit-merge"   cx="185" cy="86" />
+        <!-- Branch label -->
+        <text class="dt-label" x="100" y="38">feature</text>
+        <!-- Static branch label for main -->
+        <text font-family="'Segoe UI',system-ui,sans-serif" font-size="9" fill="#3fb950" x="14" y="104">main</text>
+        <!-- Click ripples at each interaction point -->
+        <circle class="dt-click-fork"       cx="80"  cy="86" />
+        <circle class="dt-click-branch-btn" cx="162" cy="8"  />
+        <circle class="dt-click-feature"    cx="120" cy="46" />
+        <circle class="dt-click-commit-btn" cx="70"  cy="8"  />
+        <circle class="dt-click-commit2"    cx="155" cy="46" />
+        <circle class="dt-click-merge"      cx="185" cy="86" />
+        <!-- Click ripple – merge arrow midpoint (opens Merge Properties) -->
+        <circle class="dt-click-merge-line" cx="177" cy="59" />
+        <!-- Click ripple – Dashed style button in mini panel -->
+        <circle class="dt-click-dashed-btn" cx="75"  cy="131"/>
+        <!-- Dashed merge arrow overlay — appears after Dashed button click -->
+        <path    class="dt-merge-dashed" d="M155,46 C175,46 185,66 185,86" />
+        <polyline class="dt-merge-dashed" points="178,81 185,86 192,81" />
+        <!-- Mini Merge Properties panel — appears after clicking the merge arrow -->
+        <g class="dt-merge-props-panel">
+          <!-- Panel background -->
+          <rect x="10" y="97" width="135" height="46" rx="2"
+                fill="#161b22" stroke="#30363d" stroke-width="0.5"/>
+          <!-- Panel title -->
+          <text font-family="'Segoe UI',system-ui,sans-serif" font-size="6"
+                fill="#8b949e" x="77.5" y="107" text-anchor="middle">Merge Properties</text>
+          <!-- Label row -->
+          <text font-family="'Segoe UI',system-ui,sans-serif" font-size="5.5"
+                fill="#8b949e" x="16" y="119">Label</text>
+          <rect x="35" y="111" width="104" height="10" rx="1.5"
+                fill="#0d1117" stroke="#30363d" stroke-width="0.5"/>
+          <text font-family="'Segoe UI',system-ui,sans-serif" font-size="5"
+                fill="#3d444d" x="37" y="119">e.g. cherry-pick</text>
+          <!-- Style row -->
+          <text font-family="'Segoe UI',system-ui,sans-serif" font-size="5.5"
+                fill="#8b949e" x="16" y="134">Style</text>
+          <!-- Solid button -->
+          <rect x="35" y="126" width="22" height="10" rx="1.5"
+                fill="#21262d" stroke="#444c56" stroke-width="0.5"/>
+          <text font-family="'Segoe UI',system-ui,sans-serif" font-size="5"
+                fill="#c9d1d9" x="46" y="133" text-anchor="middle">Solid</text>
+          <!-- Dashed button (animates active on click) -->
+          <rect class="dt-dashed-style-btn-rect" x="61" y="126" width="28" height="10" rx="1.5"
+                stroke-width="0.5"/>
+          <text font-family="'Segoe UI',system-ui,sans-serif" font-size="5"
+                fill="#c9d1d9" x="75" y="133" text-anchor="middle">Dashed</text>
+          <!-- Dotted button -->
+          <rect x="93" y="126" width="25" height="10" rx="1.5"
+                fill="#21262d" stroke="#444c56" stroke-width="0.5"/>
+          <text font-family="'Segoe UI',system-ui,sans-serif" font-size="5"
+                fill="#c9d1d9" x="105.5" y="133" text-anchor="middle">Dotted</text>
+        </g>
+        <!-- Animated pointer cursor -->
+        <g class="dt-cursor">
+          <path d="M0,0 L0,9 L2.5,6.5 L4,11 L5.5,10.5 L4,6.5 L6.5,6.5 Z"
+                fill="white" stroke="#444" stroke-width="0.6" stroke-linejoin="round"/>
+        </g>
+      </svg>
+      <!-- Animated caption (JS cycles through phases) -->
+      <div class="demo-tutorial-caption" id="demo-caption">
+        <span class="cap-phase active" data-phase="0">Click a commit on <strong>main</strong> to select the fork point</span>
+        <span class="cap-phase" data-phase="1">Then press <span class="demo-btn">⑂ Add Branch</span> to create your feature branch</span>
+        <span class="cap-phase" data-phase="2">Click the commit to select it, then press <span class="demo-btn">+ Add Commit</span></span>
+        <span class="cap-phase" data-phase="3">Select the feature commit, then click a branch line to <strong>merge</strong></span>
+        <span class="cap-phase" data-phase="4">Click the <strong>merge arrow</strong> to open Merge Properties</span>
+        <span class="cap-phase" data-phase="5">Set a <strong>label</strong> or choose a line style — e.g. <strong>Dashed</strong></span>
+      </div>
+    </div>
   </div>
 </div>
 
@@ -1024,18 +2062,75 @@ const NORMAL_HIT_RADIUS      = NODE_RADIUS + NODE_RING_WIDTH + NORMAL_HIT_EXTRA;
 const NORMAL_BRANCH_HIT_DIST = 14;  // larger branch-line hit area in normal mode
 const HOVER_RING_EXTRA        = 3.5; // world units added to the outer ring when a commit is hovered in normal mode
 const TAG_OFFSET_Y            = 38;  // world units above the commit center where tag badge is centered
+const LABEL_FONT_SIZE         = 18;  // branch-name label font size in CSS pixels at zoom=1
+const LABEL_FONT              = `600 ${LABEL_FONT_SIZE}px "Segoe UI", system-ui, sans-serif`;
 
-/** Colour palette cycling for branches */
-const PALETTE = [
-  { hex: 0x3fb950, css: '#3fb950' }, // green   (main)
-  { hex: 0x58a6ff, css: '#58a6ff' }, // blue
-  { hex: 0xf778ba, css: '#f778ba' }, // pink
-  { hex: 0xe3b341, css: '#e3b341' }, // amber
-  { hex: 0xbc8cff, css: '#bc8cff' }, // purple
-  { hex: 0x39d353, css: '#39d353' }, // bright-green
-  { hex: 0xff7b72, css: '#ff7b72' }, // red
-  { hex: 0x79c0ff, css: '#79c0ff' }, // light-blue
-];
+// ════════════════════════════════════════════════════════════════
+//  Themes — rendering colours for dark and light colour schemes
+// ════════════════════════════════════════════════════════════════
+const THEMES = {
+  dark: {
+    palette: [
+      { hex: 0x3fb950, css: '#3fb950' }, // green   (main)
+      { hex: 0x58a6ff, css: '#58a6ff' }, // blue
+      { hex: 0xf778ba, css: '#f778ba' }, // pink
+      { hex: 0xe3b341, css: '#e3b341' }, // amber
+      { hex: 0xbc8cff, css: '#bc8cff' }, // purple
+      { hex: 0x39d353, css: '#39d353' }, // bright-green
+      { hex: 0xff7b72, css: '#ff7b72' }, // red
+      { hex: 0x79c0ff, css: '#79c0ff' }, // light-blue
+    ],
+    bg:           0x0d1117,
+    guideRail:    0x30363d,
+    guideOpacity: 0.4,
+    mergeArrow:   0xffffff,
+    nodeRing:     0xffffff,
+    nodeShadow:   0xffffff,
+    pendingRing:  0xe3b341,
+    eligibleRing: 0x79c0ff,
+    dimmedRing:   0x3d444d,
+    selectionRing:0x33ccff,
+    mergeHover:   0xffaa33,
+    tagBg:        '#e3b341',
+    tagText:      '#0d1117',
+    tagTriangle:  '#e3b341',
+    labelBg:      'rgba(13, 17, 23, 0.85)',
+    labelBorder:  'rgba(255, 255, 255, 0.5)',
+    labelText:    '#ffffff',
+  },
+  light: {
+    palette: [
+      { hex: 0x1e40af, css: '#1e40af' }, // deep blue  (main)
+      { hex: 0xb91c1c, css: '#b91c1c' }, // crimson
+      { hex: 0x065f46, css: '#065f46' }, // forest green
+      { hex: 0x7c3aed, css: '#7c3aed' }, // violet
+      { hex: 0x92400e, css: '#92400e' }, // sepia/brown
+      { hex: 0x0e7490, css: '#0e7490' }, // dark cyan
+      { hex: 0x9d174d, css: '#9d174d' }, // deep rose
+      { hex: 0x374151, css: '#374151' }, // slate
+    ],
+    bg:           0xf5f0e8,
+    guideRail:    0xd4cfc5,
+    guideOpacity: 0.5,
+    mergeArrow:   0x1c1917,
+    nodeRing:     0x1c1917,
+    nodeShadow:   0x1c1917,
+    pendingRing:  0xd97706,
+    eligibleRing: 0x2563eb,
+    dimmedRing:   0xc8c0b0,
+    selectionRing:0x2563eb,
+    mergeHover:   0xd97706,
+    tagBg:        '#d97706',
+    tagText:      '#fff7ed',
+    tagTriangle:  '#d97706',
+    labelBg:      'rgba(248, 245, 239, 0.92)',
+    labelBorder:  'rgba(28, 25, 23, 0.35)',
+    labelText:    '#1c1917',
+  },
+};
+
+let activeTheme = THEMES.dark;
+let sketchMode = false;
 
 /** Return { hex, css } for a branch, honouring any custom colour override. */
 function branchColor(branch) {
@@ -1043,7 +2138,7 @@ function branchColor(branch) {
     const hex = parseInt(branch.customColor.slice(1), 16);
     return { hex, css: branch.customColor };
   }
-  return PALETTE[branch.colorIdx % PALETTE.length];
+  return activeTheme.palette[branch.colorIdx % activeTheme.palette.length];
 }
 
 // ════════════════════════════════════════════════════════════════
@@ -1087,7 +2182,7 @@ renderer.setSize(wrap.clientWidth, wrap.clientHeight);
 wrap.appendChild(renderer.domElement);
 
 const scene = new THREE.Scene();
-scene.background = new THREE.Color(0x0d1117);
+scene.background = new THREE.Color(activeTheme.bg);
 
 let W = wrap.clientWidth;
 let H = wrap.clientHeight;
@@ -1100,8 +2195,270 @@ const camera = new THREE.OrthographicCamera(
 camera.position.set(W / 2, BRANCH_SPACING * 3 - H / 2, 10);
 
 // ════════════════════════════════════════════════════════════════
-//  Layout helpers
+//  Sketch overlay — hand-drawn Canvas2D rendering for sketch theme
 // ════════════════════════════════════════════════════════════════
+
+const sketchOverlay = document.getElementById('sketch-overlay');
+
+/**
+ * sketchData is rebuilt by redraw() each time state changes.
+ * drawSketchCanvas() reads it every animation frame and converts
+ * world-space positions to CSS pixel coords using the live camera.
+ * Each entry has a `type` field ('line' | 'bezier' | 'circle') and
+ * world-space coordinates so the canvas tracks pan/zoom automatically.
+ */
+let sketchData = [];
+
+/** Resize the sketch overlay to match the Three.js canvas. */
+function _resizeSketchOverlay() {
+  const dpr = window.devicePixelRatio || 1;
+  sketchOverlay.width  = W * dpr;
+  sketchOverlay.height = H * dpr;
+}
+
+/** Convert world coordinates to CSS pixel coordinates on the sketch overlay. */
+function worldToCanvas(wx, wy) {
+  const halfW = (camera.right - camera.left) / 2 / camera.zoom;
+  const halfH = (camera.top - camera.bottom) / 2 / camera.zoom;
+  return {
+    x: ((wx - camera.position.x) / halfW + 1) / 2 * W,
+    y: (-(wy - camera.position.y) / halfH + 1) / 2 * H,
+  };
+}
+
+/** Seeded LCG PRNG — returns values in (-0.5, 0.5) deterministically.
+ *  Multiplier 1664525 and increment 1013904223 are the standard Numerical
+ *  Recipes LCG parameters.  The seed is scaled by a prime (997) to spread
+ *  floating-point inputs across the integer range before truncation. */
+function _skRng(seed) {
+  let s = (Math.abs(seed) * 997 + 0.5) | 0;
+  return () => {
+    s = (Math.imul(s, 1664525) + 1013904223) >>> 0;
+    return s / 0x100000000 - 0.5;
+  };
+}
+
+// Length of each jitter segment for sketch lines and curves (CSS pixels).
+const SK_SEGMENT_PX = 28;
+
+/**
+ * Draw a rough straight line (CSS px coords, two-pass pencil stroke).
+ * Jitter is deterministic from the endpoint coordinates.
+ * The seed multipliers (7.3, 13.7, 2.9, 11.1) are co-prime-ish constants
+ * chosen to produce varied seeds for different line orientations / lengths.
+ */
+function _skLine(ctx, x1, y1, x2, y2, color, pw, opacity) {
+  const dx = x2 - x1, dy = y2 - y1;
+  const len = Math.hypot(dx, dy);
+  if (len < 0.5) return;
+  const ux = -dy / len, uy = dx / len;                 // unit perpendicular
+  const amp = Math.max(0.4, pw * 0.6);                 // jitter amplitude in CSS px
+  const n = Math.max(2, Math.ceil(len / SK_SEGMENT_PX)); // one jitter point per segment
+  const rand = _skRng(x1 * 7.3 + y1 * 13.7 + x2 * 2.9 + y2 * 11.1);
+
+  ctx.save();
+  ctx.strokeStyle = color;
+  ctx.lineWidth   = pw;
+  ctx.lineCap     = 'round';
+  ctx.lineJoin    = 'round';
+
+  for (let pass = 0; pass < 2; pass++) {
+    ctx.globalAlpha = pass === 0 ? opacity * 0.72 : opacity * 0.55;
+    ctx.beginPath();
+    ctx.moveTo(x1, y1);
+    for (let i = 1; i < n; i++) {
+      const t = i / n;
+      const env = Math.sin(Math.PI * t);    // taper to 0 at both ends
+      ctx.lineTo(
+        x1 + dx * t + ux * rand() * amp * env,
+        y1 + dy * t + uy * rand() * amp * env,
+      );
+    }
+    ctx.lineTo(x2, y2);
+    ctx.stroke();
+  }
+  ctx.restore();
+}
+
+/**
+ * Draw a rough quadratic Bézier curve (CSS px coords, two-pass).
+ * If arrowAngle is defined, a filled arrowhead is drawn at (x2, y2).
+ * lineStyle: 'solid' | 'dashed' | 'dotted' (controls setLineDash).
+ * Seed multipliers (5.1, 9.3, 4.7, 8.1) differ from _skLine's set to
+ * avoid identical jitter patterns when a curve and line share endpoints.
+ */
+function _skBezier(ctx, x1, y1, cpx, cpy, x2, y2, color, pw, opacity, arrowAngle, lineStyle, zoom) {
+  const amp = Math.max(0.5, pw * 0.45);
+  const rand = _skRng(x1 * 5.1 + y1 * 9.3 + x2 * 4.7 + y2 * 8.1);
+  const N = 30;
+  zoom = zoom || 1;
+
+  ctx.save();
+  ctx.strokeStyle = color;
+  ctx.lineWidth   = pw;
+  ctx.lineCap     = 'round';
+  ctx.lineJoin    = 'round';
+
+  if (lineStyle === 'dashed') {
+    ctx.setLineDash([14 * zoom, 9 * zoom]);
+  } else if (lineStyle === 'dotted') {
+    ctx.setLineDash([2 * zoom, 9 * zoom]);
+  } else {
+    ctx.setLineDash([]);
+  }
+
+  for (let pass = 0; pass < 2; pass++) {
+    ctx.globalAlpha = pass === 0 ? opacity * 0.72 : opacity * 0.52;
+    ctx.beginPath();
+    ctx.moveTo(x1, y1);
+    for (let i = 1; i <= N; i++) {
+      const t = i / N;
+      const mt = 1 - t;
+      const bx = mt*mt*x1 + 2*mt*t*cpx + t*t*x2;
+      const by = mt*mt*y1 + 2*mt*t*cpy + t*t*y2;
+      // Tangent direction → perpendicular for jitter
+      const tx = 2*mt*(cpx-x1) + 2*t*(x2-cpx);
+      const ty = 2*mt*(cpy-y1) + 2*t*(y2-cpy);
+      const tl = Math.hypot(tx, ty);
+      const nx = tl > 0.01 ? -ty/tl : 0;
+      const ny = tl > 0.01 ?  tx/tl : 0;
+      const env = Math.sin(Math.PI * t);
+      ctx.lineTo(bx + nx * rand() * amp * env, by + ny * rand() * amp * env);
+    }
+    ctx.stroke();
+  }
+
+  if (arrowAngle !== undefined) {
+    ctx.setLineDash([]);
+    const AL = Math.max(8, pw * 3.5);
+    const AW = Math.max(4, pw * 1.8);
+    const cos = Math.cos(arrowAngle), sin = Math.sin(arrowAngle);
+    ctx.globalAlpha = opacity * 0.88;
+    ctx.fillStyle   = color;
+    ctx.beginPath();
+    ctx.moveTo(x2, y2);
+    ctx.lineTo(x2 - AL*cos + AW*sin, y2 - AL*sin - AW*cos);
+    ctx.lineTo(x2 - AL*cos - AW*sin, y2 - AL*sin + AW*cos);
+    ctx.closePath();
+    ctx.fill();
+  }
+  ctx.restore();
+}
+
+/**
+ * Draw a rough circle (CSS px coords).
+ * fillCss / strokeCss: CSS color string, or null to skip that layer.
+ * Seed multipliers (11.3, 7.7, 3.1) are chosen to spread center/radius
+ * values across the integer seed range with minimal hash collisions.
+ */
+function _skCircle(ctx, cx, cy, r, fillCss, strokeCss, psw, opacity) {
+  const N = 36;
+  const jAmp = Math.max(0.3, r * 0.075);   // radial jitter amplitude
+  const rand = _skRng(cx * 11.3 + cy * 7.7 + r * 3.1);
+
+  ctx.save();
+  ctx.lineCap  = 'round';
+  ctx.lineJoin = 'round';
+
+  if (fillCss) {
+    ctx.globalAlpha = opacity;
+    ctx.fillStyle   = fillCss;
+    ctx.beginPath();
+    for (let i = 0; i < N; i++) {
+      const a  = (i / N) * Math.PI * 2;
+      const jr = 1 + rand() * jAmp / r;
+      const px = cx + Math.cos(a) * r * jr;
+      const py = cy + Math.sin(a) * r * jr;
+      i === 0 ? ctx.moveTo(px, py) : ctx.lineTo(px, py);
+    }
+    ctx.closePath();
+    ctx.fill();
+  }
+
+  if (strokeCss && psw > 0) {
+    ctx.strokeStyle = strokeCss;
+    ctx.lineWidth   = psw;
+    // Pass 1 — main rough outline
+    ctx.globalAlpha = opacity * 0.80;
+    ctx.beginPath();
+    for (let i = 0; i <= N + 2; i++) {
+      const a  = ((i % N) / N) * Math.PI * 2 - 0.2;
+      const jr = 1 + rand() * jAmp / r;
+      const px = cx + Math.cos(a) * r * jr;
+      const py = cy + Math.sin(a) * r * jr;
+      i === 0 ? ctx.moveTo(px, py) : ctx.lineTo(px, py);
+    }
+    ctx.stroke();
+    // Pass 2 — lighter secondary stroke for pencil feel
+    ctx.globalAlpha = opacity * 0.40;
+    ctx.beginPath();
+    for (let i = 0; i <= N + 2; i++) {
+      const a  = ((i % N) / N) * Math.PI * 2 - 0.2;
+      const jr = 1 + rand() * jAmp * 1.4 / r;
+      const px = cx + Math.cos(a) * r * jr;
+      const py = cy + Math.sin(a) * r * jr;
+      i === 0 ? ctx.moveTo(px, py) : ctx.lineTo(px, py);
+    }
+    ctx.stroke();
+  }
+  ctx.restore();
+}
+
+/**
+ * Draw all sketchData elements onto a given Canvas2D context.
+ * Uses worldToCanvas(), which reads the live camera and the global W/H.
+ * Can be called for both the live overlay (each animation frame) and for
+ * the export composite (after temporarily setting the export camera).
+ */
+function _renderSketchToCtx(ctx) {
+  const zoom = camera.zoom;
+  for (const cmd of sketchData) {
+    if (cmd.type === 'line') {
+      const p1 = worldToCanvas(cmd.x1, cmd.y1);
+      const p2 = worldToCanvas(cmd.x2, cmd.y2);
+      _skLine(ctx, p1.x, p1.y, p2.x, p2.y, cmd.css, cmd.w * zoom, cmd.opacity);
+    } else if (cmd.type === 'bezier') {
+      const p1 = worldToCanvas(cmd.x1, cmd.y1);
+      const cp = worldToCanvas(cmd.cpx, cmd.cpy);
+      const p2 = worldToCanvas(cmd.x2, cmd.y2);
+      // worldToCanvas() flips the Y axis, so negate the world-space arrowAngle
+      // to keep the arrowhead pointing in the correct screen direction.
+      const canvasAngle = cmd.arrowAngle !== undefined ? -cmd.arrowAngle : undefined;
+      _skBezier(ctx, p1.x, p1.y, cp.x, cp.y, p2.x, p2.y,
+        cmd.css, cmd.w * zoom, cmd.opacity, canvasAngle, cmd.lineStyle, zoom);
+    } else if (cmd.type === 'circle') {
+      const p = worldToCanvas(cmd.cx, cmd.cy);
+      _skCircle(ctx, p.x, p.y, cmd.r * zoom,
+        cmd.fillCss, cmd.strokeCss, cmd.sw * zoom, cmd.opacity);
+    } else if (cmd.type === 'text') {
+      const p = worldToCanvas(cmd.x, cmd.y);
+      const fontSize = Math.max(8, Math.round(LABEL_FONT_SIZE * zoom));
+      ctx.save();
+      ctx.font = `600 ${fontSize}px "Segoe UI", system-ui, sans-serif`;
+      ctx.fillStyle = cmd.css;
+      ctx.textBaseline = 'middle';
+      ctx.textAlign = cmd.rightAlign ? 'right' : 'left';
+      ctx.fillText(cmd.text, p.x, p.y);
+      ctx.restore();
+    }
+  }
+}
+
+/** Redraw the sketch overlay canvas (called every animation frame in sketch mode). */
+function drawSketchCanvas() {
+  const dpr = window.devicePixelRatio || 1;
+  const ctx = sketchOverlay.getContext('2d');
+  ctx.clearRect(0, 0, sketchOverlay.width, sketchOverlay.height);
+  ctx.save();
+  ctx.scale(dpr, dpr);
+  _renderSketchToCtx(ctx);
+  ctx.restore();
+}
+
+// Initialise sketch overlay size
+_resizeSketchOverlay();
+
+
 
 /** Absolute world-x of commit at index cIdx on branch branchId */
 function commitX(branchId, cIdx) {
@@ -1199,11 +2556,18 @@ function clearScene() {
 }
 
 /**
- * Draw a thick line segment using a flat quad mesh.
+ * Draw a thick line segment using a flat quad mesh (dark mode) or
+ * push a sketch command (sketch mode).
  * Works for both horizontal and diagonal segments.
  * Pass opacity < 1 for faint/translucent lines (e.g. lane guide rails).
  */
 function addLine(x1, y1, x2, y2, colorHex, thickness, z = 0, opacity = 1) {
+  if (sketchMode) {
+    sketchData.push({ type: 'line', x1, y1, x2, y2,
+      css: '#' + colorHex.toString(16).padStart(6, '0'),
+      w: thickness, opacity });
+    return;
+  }
   const dx  = x2 - x1;
   const dy  = y2 - y1;
   const len = Math.hypot(dx, dy);
@@ -1221,16 +2585,25 @@ function addLine(x1, y1, x2, y2, colorHex, thickness, z = 0, opacity = 1) {
 }
 
 /**
- * Draw a smooth curved branch-off arc using a quadratic Bézier.
+ * Draw a smooth curved branch-off arc using a quadratic Bézier (dark mode) or
+ * push a sketch bezier command (sketch mode).
  * The control point sits at (x2, y1) to produce a right-angle feel.
  * When withArrow is true, an arrowhead triangle is drawn at the destination
  * pointing in the arrival direction (purely vertical at t=1).
  */
 function addCurve(x1, y1, x2, y2, colorHex, z = 0.5, withArrow = false) {
   const goingUp = y2 > y1;
-  // When drawing an arrowhead, stop the curve at the node edge so the tip
-  // sits just outside the circle rather than buried in its centre.
   const endY = withArrow ? (goingUp ? y2 - NODE_RADIUS : y2 + NODE_RADIUS) : y2;
+
+  if (sketchMode) {
+    sketchData.push({ type: 'bezier',
+      x1, y1, cpx: x2, cpy: y1, x2, y2: endY,
+      css: '#' + colorHex.toString(16).padStart(6, '0'),
+      w: 1.1, opacity: 1,
+      arrowAngle: withArrow ? (goingUp ? Math.PI / 2 : -Math.PI / 2) : undefined,
+    });
+    return;
+  }
 
   const curve = new THREE.QuadraticBezierCurve3(
     new THREE.Vector3(x1, y1, z),
@@ -1266,40 +2639,70 @@ function addNode(x, y, colorHex, branchSelected, commitSelected, z = 2, mergeSta
   let opacity = 1;
 
   if (mergeState === 'pending') {
-    ringColor = 0xe3b341;  // gold: this head commit is selected as the merge source
+    ringColor = activeTheme.pendingRing;  // source commit selected for merge
   } else if (mergeState === 'eligible') {
-    ringColor = 0x79c0ff;  // light-blue: head commit is selectable in merge mode
+    ringColor = activeTheme.eligibleRing; // head commit selectable in merge mode
   } else if (mergeState === 'dimmed') {
-    ringColor = 0x3d444d;  // dark gray: non-head commit, not usable in merge mode
+    ringColor = activeTheme.dimmedRing;   // non-head commit, not usable in merge mode
     opacity = 0.3;
   } else if (commitSelected) {
-    ringColor = 0xe3b341;  // gold: this specific commit is selected for branching
+    ringColor = activeTheme.pendingRing;  // this specific commit is selected
   } else if (branchSelected) {
-    ringColor = 0xffffff;  // white: branch is selected
+    ringColor = activeTheme.nodeRing;     // branch is selected
   } else if (hovered) {
-    ringColor = 0xffffff;  // white: hovered (shadow/ring extends via extraRadius)
+    ringColor = activeTheme.nodeRing;     // hovered (ring extends via extraRadius)
   } else {
-    ringColor = 0xffffff;  // white: always visible even when unselected
+    ringColor = activeTheme.nodeRing;     // default visible ring
   }
   const extraRadius = hovered ? HOVER_RING_EXTRA : 0;  // enlarge the ring when hovered
 
-  // Area-selection highlight: draw an outer cyan ring behind the node
+  if (sketchMode) {
+    const ringR   = NODE_RADIUS + NODE_RING_WIDTH + extraRadius;
+    const bgCss   = '#' + activeTheme.bg.toString(16).padStart(6, '0');
+    const ringCss = '#' + ringColor.toString(16).padStart(6, '0');
+    const fillCss = '#' + colorHex.toString(16).padStart(6, '0');
+
+    // Outer selection highlight ring
+    if (inSelection) {
+      sketchData.push({ type: 'circle', cx: x, cy: y,
+        r: ringR + 4.5, fillCss: null,
+        strokeCss: '#' + activeTheme.selectionRing.toString(16).padStart(6, '0'),
+        sw: 2.5, opacity: 0.85 });
+    }
+
+    // Background disc — covers branch line so the node reads clearly
+    sketchData.push({ type: 'circle', cx: x, cy: y,
+      r: ringR + 1.5, fillCss: bgCss, strokeCss: null, sw: 0, opacity });
+
+    // Rough circular ring (pencil outline)
+    sketchData.push({ type: 'circle', cx: x, cy: y,
+      r: ringR, fillCss: null,
+      strokeCss: ringCss, sw: NODE_RING_WIDTH, opacity });
+
+    // Filled inner dot (branch colour)
+    sketchData.push({ type: 'circle', cx: x, cy: y,
+      r: NODE_RADIUS - 0.5, fillCss: fillCss, strokeCss: null, sw: 0, opacity });
+
+    return;
+  }
+
+  // Area-selection highlight: draw an outer ring behind the node
   if (inSelection) {
     const selRadius = NODE_RADIUS + NODE_RING_WIDTH + extraRadius + 4.5;
     const selGeo = new THREE.CircleGeometry(selRadius, 32);
-    const selMat = new THREE.MeshBasicMaterial({ color: 0x33ccff, transparent: true, opacity: 0.85 });
+    const selMat = new THREE.MeshBasicMaterial({ color: activeTheme.selectionRing, transparent: true, opacity: 0.85 });
     const selMesh = new THREE.Mesh(selGeo, selMat);
     selMesh.position.set(x, y, z - 0.3);
     scene.add(selMesh);
   }
 
-  // White back-shadow: drawn behind the coloured ring to ensure contrast against any commit colour
+  // Back-shadow: drawn behind the coloured ring to ensure contrast against any commit colour
   const isHighlighted = mergeState === 'pending' || mergeState === 'eligible'
     || commitSelected || branchSelected || hovered;
   if (isHighlighted) {
     const shadowRadius = NODE_RADIUS + NODE_RING_WIDTH + extraRadius + 1.5;
     const shadowGeo = new THREE.CircleGeometry(shadowRadius, 32);
-    const shadowMat = new THREE.MeshBasicMaterial({ color: 0xffffff, transparent: opacity < 1, opacity });
+    const shadowMat = new THREE.MeshBasicMaterial({ color: activeTheme.nodeShadow, transparent: opacity < 1, opacity });
     const shadowMesh = new THREE.Mesh(shadowGeo, shadowMat);
     shadowMesh.position.set(x, y, z - 0.15);
     scene.add(shadowMesh);
@@ -1322,11 +2725,17 @@ function addNode(x, y, colorHex, branchSelected, commitSelected, z = 2, mergeSta
  *  rightAlign=false: left edge of label at x (default)
  *  rightAlign=true:  right edge of label at x */
 function addLabel(text, x, y, colorCss, z = 3, rightAlign = false) {
+  // In sketch mode, push to sketchData so the label is drawn on the overlay canvas
+  // (on top of the guide rails) rather than as a Three.js sprite underneath.
+  if (sketchMode) {
+    sketchData.push({ type: 'text', text, x, y, css: colorCss, rightAlign });
+    return;
+  }
+
   const cvs = document.createElement('canvas');
   const ctx = cvs.getContext('2d');
-  const font = '600 18px "Segoe UI", system-ui, sans-serif';
   // Measure text at base resolution to get natural world-space dimensions.
-  ctx.font = font;
+  ctx.font = LABEL_FONT;
   const pad = 8;
   const baseWidth  = Math.ceil(ctx.measureText(text).width) + pad * 2;
   const baseHeight = 28;
@@ -1337,7 +2746,7 @@ function addLabel(text, x, y, colorCss, z = 3, rightAlign = false) {
   cvs.width  = Math.ceil(baseWidth  * scale);
   cvs.height = Math.ceil(baseHeight * scale);
   ctx.scale(scale, scale);
-  ctx.font      = font;
+  ctx.font      = LABEL_FONT;
   ctx.fillStyle = colorCss;
   ctx.fillText(text, pad, 21);
 
@@ -1380,7 +2789,7 @@ function addTagLabel(text, commitX, commitY, commitId) {
 
   // Amber rounded-rectangle background
   const r = 3;
-  ctx.fillStyle = '#e3b341';
+  ctx.fillStyle = activeTheme.tagBg;
   ctx.beginPath();
   ctx.moveTo(r, 0);
   ctx.lineTo(baseWidth - r, 0);
@@ -1395,11 +2804,11 @@ function addTagLabel(text, commitX, commitY, commitId) {
   ctx.fill();
 
   // Dark text
-  ctx.fillStyle = '#0d1117';
+  ctx.fillStyle = activeTheme.tagText;
   ctx.fillText(text, pad, 14);
 
   // Small downward triangle connecting the badge to the commit below it
-  ctx.fillStyle = '#e3b341';
+  ctx.fillStyle = activeTheme.tagTriangle;
   const triHalf = 4;
   const triX = baseWidth / 2;
   ctx.beginPath();
@@ -1425,10 +2834,8 @@ function addTagLabel(text, commitX, commitY, commitId) {
  * Control point at (x2, y1) makes the curve go horizontal from the source
  * side then turn vertical to arrive purely vertically at the target.
  */
-// Merge arrows are always rendered above all other scene elements and use a
-// reserved white color so they are never confused with a branch color.
-const MERGE_ARROW_COLOR = 0xffffff;
-
+// Merge arrows are always rendered above all other scene elements.
+// The colour is read from the active theme via activeTheme.mergeArrow.
 /** Render a text badge near the midpoint of a merge curve. */
 function addMergeArrowLabel(text, curve) {
   if (!text) return;
@@ -1448,9 +2855,9 @@ function addMergeArrowLabel(text, curve) {
   ctx.scale(scale, scale);
   ctx.font = font;
 
-  // Semi-transparent dark background with rounded corners
+  // Semi-transparent background with rounded corners
   const r = 3;
-  ctx.fillStyle = 'rgba(13, 17, 23, 0.85)';
+  ctx.fillStyle = activeTheme.labelBg;
   ctx.beginPath();
   ctx.moveTo(r, 0); ctx.lineTo(baseWidth - r, 0);
   ctx.quadraticCurveTo(baseWidth, 0, baseWidth, r);
@@ -1461,13 +2868,13 @@ function addMergeArrowLabel(text, curve) {
   ctx.closePath();
   ctx.fill();
 
-  // White border
-  ctx.strokeStyle = 'rgba(255, 255, 255, 0.5)';
+  // Border
+  ctx.strokeStyle = activeTheme.labelBorder;
   ctx.lineWidth = 1;
   ctx.stroke();
 
-  // White text
-  ctx.fillStyle = '#ffffff';
+  // Text
+  ctx.fillStyle = activeTheme.labelText;
   ctx.fillText(text, pad, 13);
 
   const tex    = new THREE.CanvasTexture(cvs);
@@ -1512,7 +2919,7 @@ function hitTestMergeArrow(wx, wy) {
 
 function addMergeArrow(x1, y1, x2, y2, inSelection = false, lineStyle = 'solid', label = '', hovered = false) {
   const z = 4; // above nodes (z=2) and labels (z=3)
-  const color = inSelection ? 0x33ccff : hovered ? 0xffaa33 : MERGE_ARROW_COLOR;
+  const color = inSelection ? activeTheme.selectionRing : hovered ? activeTheme.mergeHover : activeTheme.mergeArrow;
 
   // Start from the left or right edge of the source node (side exit) so the
   // arrow visually leaves from the side rather than the top/bottom.
@@ -1521,6 +2928,26 @@ function addMergeArrow(x1, y1, x2, y2, inSelection = false, lineStyle = 'solid',
   // Arrive at the top or bottom edge of the target node (as before).
   const goingUp = y2 > y1;  // positive Y is up in Three.js
   const endY    = goingUp ? y2 - NODE_RADIUS : y2 + NODE_RADIUS;
+
+  const arrowAngle = goingUp ? Math.PI / 2 : -Math.PI / 2;
+
+  if (sketchMode) {
+    const css = '#' + color.toString(16).padStart(6, '0');
+    const w   = hovered ? 2.2 : 1.1;
+    sketchData.push({ type: 'bezier',
+      x1: startX, y1, cpx: x2, cpy: y1, x2, y2: endY,
+      css, w, opacity: 0.9, arrowAngle, lineStyle });
+    // The label sprite still uses Three.js; create the curve just for positioning
+    if (label) {
+      const curve = new THREE.QuadraticBezierCurve3(
+        new THREE.Vector3(startX, y1, z),
+        new THREE.Vector3(x2,     y1, z),
+        new THREE.Vector3(x2,   endY, z),
+      );
+      addMergeArrowLabel(label, curve);
+    }
+    return;
+  }
 
   // Quadratic Bézier — control point at (x2, y1): go horizontal from the
   // side of the source to the target column, then turn vertical to arrive
@@ -1589,6 +3016,7 @@ function addMergeArrow(x1, y1, x2, y2, inSelection = false, lineStyle = 'solid',
 function redraw() {
   _branchEndXCache.clear();
   _tagWorldPositions.clear();
+  sketchData = [];   // rebuilt below (used by drawSketchCanvas() in sketch mode)
   clearScene();
 
   // ── Lane guide rails ──────────────────────────────────────────
@@ -1608,7 +3036,7 @@ function redraw() {
 
     for (let r = minRow; r <= maxRow; r++) {
       const y = -r * BRANCH_SPACING;
-      addLine(0, y, guideX, y, 0x30363d, 1, -1, 0.4);
+      addLine(0, y, guideX, y, activeTheme.guideRail, 1, -1, activeTheme.guideOpacity);
     }
   }
 
@@ -1626,7 +3054,7 @@ function redraw() {
     if (branch.parentId) {
       const px = commitX(branch.parentId, branch.parentCIdx);
       const py = branchY(branch.parentId);
-      addCurve(px, py, sx, by, MERGE_ARROW_COLOR, 0.5, true);
+      addCurve(px, py, sx, by, activeTheme.mergeArrow, 0.5, true);
     }
 
     // Horizontal branch line (extends a short tail past the last commit)
@@ -1880,6 +3308,7 @@ function update() {
   renderSidebar();
   redraw();
   updateHint();
+  updateMergeHint();
   document.getElementById('btn-delete-sel').style.display = hasAnythingSelected() ? 'inline-flex' : 'none';
   updateMergePropsPanel();
 }
@@ -1887,6 +3316,20 @@ function update() {
 // ════════════════════════════════════════════════════════════════
 //  Merge properties panel
 // ════════════════════════════════════════════════════════════════
+
+/** Show a brief hint below the canvas toolbar when a commit on a non-root
+ *  branch is selected, reminding the user they can click a branch to merge. */
+let _mergeHintDismissed = false;
+function updateMergeHint() {
+  const el = document.getElementById('merge-hint');
+  const show = (() => {
+    if (_mergeHintDismissed) return false;
+    if (!state.selectedCommit || state.mergePending) return false;
+    const branch = state.branches.find(b => b.id === state.selectedCommit.branchId);
+    return branch ? branch.parentId !== null : false;
+  })();
+  el.classList.toggle('visible', show);
+}
 
 /** Show/hide and populate the merge properties panel based on the current
  *  area selection.  The panel is visible only when exactly one merge is
@@ -2019,6 +3462,8 @@ function updateTagOverlays() {
  * Also selects the branch that owns the commit.
  */
 function selectCommit(branchId, cIdx) {
+  hideOnboarding();
+  _mergeHintDismissed = false;
   state.selectedId     = branchId;
   state.selectedCommit = { branchId, cIdx };
   update();
@@ -2114,7 +3559,7 @@ function addBranch(name, position = 'below') {
   state.branches.push({
     id,
     name,
-    colorIdx:    state.branches.length % PALETTE.length,
+    colorIdx:    state.branches.length % activeTheme.palette.length,
     customColor: null,
     parentId,
     parentCIdx,
@@ -2135,6 +3580,48 @@ function addCommit() {
   branch.commits.push('c' + (state.nextCommitId++));
   update();
 }
+
+// ════════════════════════════════════════════════════════════════
+//  Onboarding callout
+// ════════════════════════════════════════════════════════════════
+function hideOnboarding() {
+  const el = document.getElementById('onboarding-callout');
+  if (!el || el.classList.contains('hidden')) return;
+  el.classList.add('hidden');
+}
+
+// ════════════════════════════════════════════════════════════════
+//  Demo tutorial callout
+// ════════════════════════════════════════════════════════════════
+(function () {
+  const el = document.getElementById('demo-tutorial');
+  if (!el) return;
+
+  // Cycle caption text in sync with the CSS animation (18 s loop, 6 phases).
+  // Use performance.now() so the caption clock starts at the same moment the
+  // CSS animations do, keeping text and visuals in phase.
+  const phases = el.querySelectorAll('.cap-phase');
+  const phaseTimes = [0, 2770, 6920, 9830, 13150, 15230]; // ms into the 18 s cycle when each phase becomes active
+  const cycleDuration = 18000;
+  const animStart = performance.now();
+
+  function updateCaption() {
+    const elapsed = (performance.now() - animStart) % cycleDuration;
+    let active = 0;
+    for (let i = phaseTimes.length - 1; i >= 0; i--) {
+      if (elapsed >= phaseTimes[i]) { active = i; break; }
+    }
+    phases.forEach((p, i) => p.classList.toggle('active', i === active));
+  }
+
+  const captionInterval = setInterval(updateCaption, 100);
+
+  // Dismiss: hide the callout and stop the caption ticker
+  document.getElementById('demo-tutorial-close').addEventListener('click', () => {
+    el.classList.add('hidden');
+    clearInterval(captionInterval);
+  }, { once: true });
+}());
 
 // ════════════════════════════════════════════════════════════════
 //  Initialise with a "main" branch and three starter commits
@@ -2367,6 +3854,7 @@ window.addEventListener('mouseup', e => {
 // Click on the canvas: hit-test commit nodes and select the one clicked
 wrap.addEventListener('click', e => {
   if (selMoved) { selMoved = false; return; }  // was a selection drag, not a click
+  if (e.target.closest('#canvas-toolbar')) return;  // toolbar button clicks should not affect canvas hit-testing
 
   const world     = screenToWorld(e.clientX, e.clientY);
   const hitRadius = NORMAL_HIT_RADIUS;
@@ -2525,6 +4013,7 @@ window.addEventListener('resize', () => {
   camera.top    =  H / 2;
   camera.bottom = -H / 2;
   camera.updateProjectionMatrix();
+  _resizeSketchOverlay();
 });
 
 // ════════════════════════════════════════════════════════════════
@@ -2699,9 +4188,29 @@ document.getElementById('btn-export-png').addEventListener('click', () => {
   // Resize renderer to match the diagram (updateStyle=false keeps the visible canvas unchanged)
   renderer.setSize(exportW, exportH, false);
   renderer.render(scene, camera);
+
   let dataURL;
   try {
-    dataURL = renderer.domElement.toDataURL('image/png');
+    if (sketchMode) {
+      // In sketch mode the diagram lines/circles are on the overlay canvas, not
+      // the Three.js canvas.  Composite both onto an off-screen canvas:
+      // Three.js canvas → background colour + text-label sprites
+      // sketch overlay  → rough lines, curves, and circles
+      const composite = document.createElement('canvas');
+      composite.width  = exportW;
+      composite.height = exportH;
+      const cCtx = composite.getContext('2d');
+      // Draw Three.js output (bg + sprites)
+      cCtx.drawImage(renderer.domElement, 0, 0, exportW, exportH);
+      // Draw sketch primitives using the export camera (W/H temporarily = exportW/H)
+      const savedW = W, savedH = H;
+      W = exportW; H = exportH;
+      _renderSketchToCtx(cCtx);
+      W = savedW; H = savedH;
+      dataURL = composite.toDataURL('image/png');
+    } else {
+      dataURL = renderer.domElement.toDataURL('image/png');
+    }
   } catch (err) {
     console.error('PNG export failed:', err);
     alert('Export failed. Please try again.');
@@ -2741,13 +4250,43 @@ document.getElementById('btn-export-png').addEventListener('click', () => {
 });
 
 // ════════════════════════════════════════════════════════════════
+//  Theme switching
+// ════════════════════════════════════════════════════════════════
+
+/** Apply the named colour scheme ('dark' | 'light') and repaint everything. */
+function applyColorScheme(scheme) {
+  activeTheme = THEMES[scheme];
+  document.body.setAttribute('data-color-scheme', scheme);
+  // Update the Three.js scene background
+  scene.background.set(activeTheme.bg);
+  // Rebuild colour-picker swatches with the new palette
+  rebuildColorPickerSwatches();
+  // Sync the toggle checkbox (checked = light mode active)
+  document.getElementById('btn-color-toggle').checked = scheme === 'light';
+  // Redraw the canvas with the new theme colours
+  redraw();
+}
+
+/** Toggle sketch mode on or off and repaint everything. */
+function applySketchMode(enabled) {
+  sketchMode = enabled;
+  // Show or hide the sketch overlay canvas
+  sketchOverlay.style.display = enabled ? 'block' : 'none';
+  // Sync the toggle checkbox
+  document.getElementById('btn-sketch-toggle').checked = enabled;
+  // Redraw the canvas with the updated rendering mode
+  redraw();
+}
+
+// ════════════════════════════════════════════════════════════════
 //  Colour picker
 // ════════════════════════════════════════════════════════════════
 let _cpBranchId = null;  // id of the branch currently being colour-edited
 
-function initColorPicker() {
+function rebuildColorPickerSwatches() {
   const container = document.getElementById('cp-swatches');
-  PALETTE.forEach(({ css }, idx) => {
+  container.replaceChildren(); // remove all existing swatch buttons
+  activeTheme.palette.forEach(({ css }, idx) => {
     const btn = document.createElement('button');
     btn.className = 'cp-swatch-btn';
     btn.style.background = css;
@@ -2763,6 +4302,10 @@ function initColorPicker() {
     });
     container.appendChild(btn);
   });
+}
+
+function initColorPicker() {
+  rebuildColorPickerSwatches();
 
   const customInput = document.getElementById('cp-custom-input');
   // Live preview while the native colour picker is open
@@ -3143,6 +4686,7 @@ window.addEventListener('keydown', e => {
 function animate() {
   requestAnimationFrame(animate);
   renderer.render(scene, camera);
+  if (sketchMode) drawSketchCanvas();
   updateTagOverlays();
 }
 
@@ -3187,9 +4731,22 @@ initColorPicker();
 init();
 animate();
 
+// Enable sketch mode by default
+applySketchMode(true);
+
+document.getElementById('btn-sketch-toggle').addEventListener('change', function () {
+  applySketchMode(this.checked);
+});
+
+document.getElementById('btn-color-toggle').addEventListener('change', function () {
+  applyColorScheme(this.checked ? 'light' : 'dark');
+});
+
 document.getElementById('alpha-banner-close').addEventListener('click', () => {
   document.getElementById('alpha-banner').style.display = 'none';
 });
+
+document.getElementById('onboarding-close').addEventListener('click', hideOnboarding);
 
 // ── User Guide panel ────────────────────────────────────────────
 (function () {
@@ -3210,6 +4767,12 @@ document.getElementById('alpha-banner-close').addEventListener('click', () => {
     panel.classList.contains('open') ? closeGuide() : openGuide();
   });
   btnClose.addEventListener('click', closeGuide);
+
+  document.getElementById('merge-hint-help').addEventListener('click', openGuide);
+  document.getElementById('merge-hint-close').addEventListener('click', () => {
+    _mergeHintDismissed = true;
+    document.getElementById('merge-hint').classList.remove('visible');
+  });
 
   document.getElementById('privacy-link').addEventListener('click', () => {
     openGuide();
