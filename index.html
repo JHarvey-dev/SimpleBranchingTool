@@ -4263,6 +4263,8 @@ function applyColorScheme(scheme) {
   rebuildColorPickerSwatches();
   // Sync the toggle checkbox (checked = light mode active)
   document.getElementById('btn-color-toggle').checked = scheme === 'light';
+  // Re-render the sidebar so branch swatches and commit dots use the new palette
+  renderSidebar();
   // Redraw the canvas with the new theme colours
   redraw();
 }
